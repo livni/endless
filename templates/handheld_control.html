@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#left-arrow").click(function(){
+                $.ajax({
+                    type: 'POST',
+                    //data: 'id=17446&chru=0',
+                    success: function() {},
+                    error: function(){},
+                    url: '/left/',
+                    cache:false
+                });
+            });
+            $("#right-arrow").click(function(){
+                $.ajax({
+                    type: 'POST',
+                    //data: 'id=17446&chru=0',
+                    success: function() {},
+                    error: function(){},
+                    url: '/right/',
+                    cache:false
+                });
+            });
+        });
+    </script>
+
+
+    <title>Endless Adventure</title>
+</head>
+<body>
+Endless Adventure!
+<div style="vertical-align: text-top;text-align:center;">
+    <img src="static/left-arrow.png" id="left-arrow">
+    <img src="static/right-arrow.png" id="right-arrow">
+</div>
+</body>
+</html>
