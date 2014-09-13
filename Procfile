@@ -1,1 +1,1 @@
-web: gunicorn service:app --log-file=-
+web: gunicorn endless:app --log-file=-
