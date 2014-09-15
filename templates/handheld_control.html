@@ -3,25 +3,26 @@
 <head lang="en">
     <meta charset="UTF-8">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     <script>
         $(document).ready(function(){
             $("#left-arrow").click(function(){
                 $.ajax({
-                    type: 'POST',
-                    //data: 'id=17446&chru=0',
+                    type: 'GET',
+                    url: '/vote',
+                    data: {"side": "left", "name": $("#username").val()},
                     success: function() {},
-                    error: function(){},
-                    url: '/left/',
+                    error: function() {},
                     cache:false
                 });
             });
             $("#right-arrow").click(function(){
                 $.ajax({
-                    type: 'POST',
-                    //data: 'id=17446&chru=0',
+                    type: 'GET',
+                    url: '/vote',
+                    data: {"side": "right", "name": $("#username").val()},
                     success: function() {},
-                    error: function(){},
-                    url: '/right/',
+                    error: function() {},
                     cache:false
                 });
             });
@@ -32,10 +33,15 @@
     <title>Endless Adventure</title>
 </head>
 <body>
-Endless Adventure!
+<div class="input-group input-group-lg">
+  <span class="input-group-addon">Name</span>
+  <input type="text" class="form-control" placeholder="Write your name here" id="username">
+</div>
 <div style="vertical-align: text-top;text-align:center;">
-    <img src="static/left-arrow.png" id="left-arrow">
-    <img src="static/right-arrow.png" id="right-arrow">
+    <button class="btn btn-lg" id="left-arrow"><i class="glyphicon glyphicon-chevron-left"></i></button>
+    <button class="btn btn-lg" id="right-arrow"><i class="glyphicon glyphicon-chevron-right"></i></button>
+{#    <img src="static/left-arrow.png" id="left-arrow">#}
+{#    <img src="static/right-arrow.png" id="right-arrow">#}
 </div>
 </body>
 </html>
