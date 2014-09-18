@@ -37,7 +37,7 @@ h1 {
   left: 0;
 }
 
-#left-button {
+#left-button, #left-arrow {
   position: absolute;
   left: 0;
   top: 25%;
@@ -46,7 +46,7 @@ h1 {
   display: none;
 }
 
-#right-button {
+#right-button, #right-arrow {
   position: absolute;
   right: 0;
   top: 25%;

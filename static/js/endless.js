@@ -24,9 +24,19 @@
         cache:false
     });
 
+    $('#'+direction+'-arrow')
+      .fadeIn()
+      .animate({'top': '120%', 'opacity': 0})
+      .fadeOut()
+      .animate({'top': '25%', 'opacity': 1})
+      ;
   });
 
   // Preloading like is 1999
-  var imagePhone = new Image();
-  imagePhone = '/static/img/keypad.jpg';
+  var images = [];
+  var imageSrcs = ['/static/img/keypad.jpg', '/static/img/arrow_left.png', '/static/img/arrow_right.png'];
+  imageSrcs.forEach(function() {
+    images[arguments[1]] = new Image();
+    images[arguments[1]].src = arguments[0];
+  });
 })();
