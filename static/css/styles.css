@@ -6,9 +6,9 @@ html,body {
 h1 {
   font-family: Arial,sans-serif;
   font-size: 50px;
-  color:#DDCCEE;
+  color: goldenrod;
+  text-shadow: 1px 1px 1px #ff0;
 }
-
 
 /* Custom container */
 .container-full {
