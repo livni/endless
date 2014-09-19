@@ -25,7 +25,7 @@ def vote():
     q = getattr(r, side)
     q.append(name)
     if name in r.vote_count:
-        r.vote_count[name] = int(r.vote_count[name]) + 1
+        r.redis_conn.hincrby('vote-count', name)
     else:
         r.vote_count[name] = 1
     if name not in r.color_mapping:
