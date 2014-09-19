@@ -1,47 +1,82 @@
-import datetime
+import random
+import operator
 from flask import Flask, render_template, request, jsonify
+
+import redis_conduit as r
 
 app = Flask(__name__)
 
 ACTION_LIMIT = 5
-hugo_position_min = 1
-hugo_position_max = 5
-state = {'left': [], 'right': [], 'position': 3}
+position_min = 1
+position_max = 3
+position_default = 2
+
 
 @app.route('/')
 def control_view():
     return render_template('handheld_control.html')
 
+
 @app.route('/vote')
 def vote():
-    global state
     side = request.args.get('side')
     assert(side in ('left', 'right'))
     name = request.args.get('name')
-    now = datetime.datetime.now()
-    # data = {'name': name, 'time': now}
-    state[side].append(name)
-    if len(state[side]) == ACTION_LIMIT:
-        delta = {'left': -1, 'right': 1}[side]
-        new_position = state['position'] + delta
-        if hugo_position_min <= new_position <= hugo_position_max:
-            print 'Hugo moved %s from %d to %d' % (side, state['position'], new_position)
-            state['position'] = new_position
-        else:
-            print 'Hugo can\'t move %s as already at extremum %d' % (side, state['position'])
-        state['left'] = []
-        state['right'] = []
+    q = getattr(r, side)
+    q.append(name)
+    if name in r.vote_count:
+        r.redis_conn.hincrby('vote-count', name)
     else:
-        print 'votes: %d,%d' % (len(state['left']), len(state['right']))
-    return side
+        r.vote_count[name] = 1
+    if name not in r.color_mapping:
+        r.color_mapping[name] = (random.randint(100, 255), random.randint(100, 255), random.randint(100, 255))
+    return 'voted'
+
 
 @app.route('/status')
 def status():
     return render_template('status.html')
 
+
 @app.route('/get-status')
 def get_status():
-    return jsonify(**state)
+    with r.status_lock:
+        left_count = len(r.left)
+        right_count = len(r.right)
+        if (left_count >= ACTION_LIMIT) or (right_count >= ACTION_LIMIT):
+            r.left.clear()
+            r.right.clear()
+            r.state['last-left-count-upon-action'] = left_count
+            r.state['last-right-count-upon-action'] = right_count
+            if left_count >= right_count:
+                r.state['current-position'] = max(position_min, int(r.state['current-position']) - 1)
+            else:
+                r.state['current-position'] = min(position_max, int(r.state['current-position']) + 1)
+        status_data = {
+            'position-min': position_min,
+            'position-max': position_max,
+            'current-position': int(r.state['current-position']),
+            'color-mapping': dict(r.color_mapping),
+            'vote-count': sorted(dict(r.vote_count).iteritems(), key=operator.itemgetter(1)),
+            'left': list(r.left),
+            'right': list(r.right),
+            'action-limit': ACTION_LIMIT,
+            'last-left-count-upon-action': int(r.state['last-left-count-upon-action']),
+            'last-right-count-upon-action': int(r.state['last-right-count-upon-action']),
+        }
+    return jsonify(**status_data)
+
+
+@app.route('/reset')
+def reset():
+    r.color_mapping.clear()
+    r.vote_count.clear()
+    r.left.clear()
+    r.right.clear()
+    r.state['last-left-count-upon-action'] = 0
+    r.state['last-right-count-upon-action'] = 0
+    r.state['current-position'] = position_default
+    return 'reset'
 
 
 if __name__ == '__main__':
