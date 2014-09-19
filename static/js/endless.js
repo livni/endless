@@ -1,4 +1,11 @@
 (function() {
+    var outbox = new ReconnectingWebSocket("ws://"+ location.host + "/vote");
+
+    outbox.onclose = function(h) {
+        console.log('outbox closed ' + h.reason + ' code ' + h.code);
+        this.outbox = new WebSocket(outbox.url);
+    };
+
   var _name = 'incognito';
   var signin = function() {
     _name = $('#signin-input')[0].value || _name;
@@ -12,14 +19,7 @@
   };
 
   var vote = function(direction, name) {
-    $.ajax({
-        type: 'GET',
-        url: '/vote',
-        data: {"side": direction, "name": name},
-        success: function() {},
-        error: function() {},
-        cache:false
-    });
+      outbox.send(JSON.stringify({ side: direction, name: name }));
   };
 
   $('#signin-form button').on('click', signin);
