@@ -11,19 +11,23 @@
     return false;
   };
 
+  var vote = function(direction, name) {
+    $.ajax({
+        type: 'GET',
+        url: '/vote',
+        data: {"side": direction, "name": name},
+        success: function() {},
+        error: function() {},
+        cache:false
+    });
+  };
+
   $('#signin-form button').on('click', signin);
   $('#signin-form').on('submit', signin);
 
   $('#left-button, #right-button').on('click', function() {
     var direction = $(this).data('direction');
-    $.ajax({
-        type: 'GET',
-        url: '/vote',
-        data: {"side": direction, "name": _name},
-        success: function() {},
-        error: function() {},
-        cache:false
-    });
+    vote(direction, _name);
 
     $('#'+direction+'-arrow')
       .fadeIn()
@@ -40,4 +44,5 @@
     images[arguments[1]] = new Image();
     images[arguments[1]].src = arguments[0];
   });
+
 })();
