@@ -29,7 +29,7 @@ def vote():
     else:
         r.vote_count[name] = 1
     if name not in r.color_mapping:
-        r.color_mapping[name] = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        r.color_mapping[name] = (random.randint(100, 255), random.randint(100, 255), random.randint(100, 255))
     return 'voted'
 
 
