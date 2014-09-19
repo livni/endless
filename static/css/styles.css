@@ -54,3 +54,9 @@ h1 {
   height: 30%;
   display: none;
 }
+
+#mascot {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}

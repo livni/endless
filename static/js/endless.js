@@ -5,6 +5,7 @@
 
     $('#signin-container').animate({'height': '0%'}, 500);
     $('#control-container').animate({'height': '100%'}, 500);
+    $('#mascot').animate({'bottom': '-1000'}, 500);
     $('#left-button, #right-button').show();
 
     return false;
