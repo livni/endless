@@ -9,4 +9,4 @@ itsdangerous==0.24
 pytz==2014.7
 redis==2.10.3
 six==1.8.0
-git+git://github.com/livni/redis_wrap.git@66922536b4718ee78102bf42879c16a6c3927b87#egg=redis_wrap
+git+git://github.com/livni/redis_wrap.git@1fbdc2f779785a88ba43fd209fea6573305544ed#egg=redis_wrap
