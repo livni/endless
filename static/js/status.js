@@ -17,7 +17,7 @@
     $('#tube-right .fill').animate({height: rightHeight}, 200);
 
     var mascotRotate = (data.right.length - data.left.length) / data['action-limit'];
-    $('#mascot').css({transformOriginX:'50%', transformOriginY:'100%', left: ($(window).width()/2-166)}).animate({rotate: mascotRotate*3}, 400);
+    $('#mascot').css({transformOriginX:'50%', transformOriginY:'100%', left: ($(window).width()/2-166)}).animate({rotate: mascotRotate}, 200);
   };
 
   fetchData();
