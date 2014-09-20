@@ -18,7 +18,8 @@
 
     var mascotRotate = (data.right.length - data.left.length) / data['action-limit'];
     var position = ((data['current-position']-2)*250);
-    $('#mascot').css({transformOriginX:'50%', transformOriginY:'100%', left: ($(window).width()/2-166+position)}).animate({rotate: mascotRotate}, 200);
+    var leftPos = ($(window).width()/2-166+position)+'px';
+    $('#mascot').css({transformOriginX:'50%', transformOriginY:'100%'}).animate({rotate: mascotRotate, left: leftPos}, 200);
     var namesLeft = '';
     var namesRight = '';
     var votesLeft = {};
