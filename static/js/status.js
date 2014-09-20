@@ -1,21 +1,19 @@
-function StatusCtrl($scope) {
-    $scope.state = {};
+(function() {
+  var fetchData = function() {
+    $.ajax({
+      type: 'GET',
+      url: '/get-status',
+      success: refreshDisplay,
+      error: function() {},
+      cache:false
+    });
+    setTimeout(fetchData, 750);
+  };
 
-    function refreshDisplay(state) {
-        $scope.state = state;
-        $scope.$apply();
-    }
+  var refreshDisplay = function(data) {
+    window.console.log(data);
+    $('#leftVotes');
+  };
 
-    var update = function() {
-        $.ajax({
-            type: 'GET',
-            url: '/get-status',
-            success: refreshDisplay,
-            error: function() {},
-            cache:false
-        });
-    };
-    var interval = 200;
-    setInterval (update, interval);
-}
-
+  fetchData();
+})();
