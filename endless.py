@@ -11,7 +11,7 @@ import redis_conduit as r
 app = Flask(__name__)
 sockets = Sockets(app)
 
-ACTION_LIMIT = 100
+ACTION_LIMIT = 80
 position_min = 1
 position_max = 3
 position_default = 2
