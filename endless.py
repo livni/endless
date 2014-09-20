@@ -35,12 +35,12 @@ def vote(name, side):
 def vote_ws(ws):
     while not ws.closed:
         # Sleep to prevent *contstant* context-switches.
-        gevent.sleep(0.1)
+        #gevent.sleep(0.1)
         message_json = ws.receive()
         if message_json:
             message = json.loads(message_json)
             vote(**message)
-            print('voted %s' % repr(message))
+            #print('voted %s' % repr(message))
 
 
 @app.route('/status')
