@@ -60,10 +60,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00529622', e
 .tube ul {
   list-style: none;
   position: absolute;
-  bottom: 0;
-  width:  280px;
+  top: 0;
+  width: 280px;
   padding: 10px 45px;
   color: #fff;
-  font-size: 30px;
+  font-size: 17px;
   margin: 0 auto;
+  text-align: center;
 }
