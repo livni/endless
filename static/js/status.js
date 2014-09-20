@@ -18,6 +18,24 @@
 
     var mascotRotate = (data.right.length - data.left.length) / data['action-limit'];
     $('#mascot').css({transformOriginX:'50%', transformOriginY:'100%', left: ($(window).width()/2-166)}).animate({rotate: mascotRotate}, 200);
+    var namesLeft = '';
+    var namesRight = '';
+    var votesLeft = {};
+    var votesRight = {};
+    data.left.forEach(function(name) {
+      votesLeft[name] = votesLeft[name] ? votesLeft[name]+1 : 1;
+      namesLeft += '<li class="'+name+'">'+name+'</li>';
+    })
+    for (name in votesLeft) {
+    }
+    data.right.forEach(function(name) {
+      votesRight[name] = votesRight[name] ? votesRight[name]+1 : 1;
+      namesRight += '<li class="'+name+'">'+name+'</li>';
+    })
+    for (name in votesRight) {
+    }
+    $('#tube-left ul').html(namesLeft);
+    $('#tube-right ul').html(namesRight);
   };
 
   fetchData();

@@ -57,3 +57,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00529622', e
   height: 526px;
   bottom: -80px;
 }
+.tube ul {
+  list-style: none;
+  position: absolute;
+  bottom: 0;
+  width:  280px;
+  padding: 10px 45px;
+  color: #fff;
+  font-size: 30px;
+  margin: 0 auto;
+}
