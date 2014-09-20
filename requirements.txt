@@ -16,3 +16,4 @@ six==1.8.0
 git+git://github.com/livni/redis_wrap.git@1fbdc2f779785a88ba43fd209fea6573305544ed#egg=redis_wrap
 #ws4py==0.3.4
 websocket-client>=0.14.1
+pymodbus
