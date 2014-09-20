@@ -17,7 +17,8 @@
     $('#tube-right .fill').animate({height: rightHeight}, 200);
 
     var mascotRotate = (data.right.length - data.left.length) / data['action-limit'];
-    $('#mascot').css({transformOriginX:'50%', transformOriginY:'100%', left: ($(window).width()/2-166)}).animate({rotate: mascotRotate}, 200);
+    var position = ((data['current-position']-2)*250);
+    $('#mascot').css({transformOriginX:'50%', transformOriginY:'100%', left: ($(window).width()/2-166+position)}).animate({rotate: mascotRotate}, 200);
     var namesLeft = '';
     var namesRight = '';
     var votesLeft = {};
