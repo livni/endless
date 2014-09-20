@@ -1,10 +1,13 @@
+import json
+import gevent
 import random
 import operator
-from flask import Flask, render_template, request, jsonify
-
+from flask import Flask, render_template, jsonify
+from flask_sockets import Sockets
 import redis_conduit as r
 
 app = Flask(__name__)
+sockets = Sockets(app)
 
 ACTION_LIMIT = 5
 position_min = 1
@@ -17,11 +20,7 @@ def control_view():
     return render_template('handheld_control.html')
 
 
-@app.route('/vote')
-def vote():
-    side = request.args.get('side')
-    assert(side in ('left', 'right'))
-    name = request.args.get('name')
+def vote(name, side):
     q = getattr(r, side)
     q.append(name)
     if name in r.vote_count:
@@ -30,7 +29,18 @@ def vote():
         r.vote_count[name] = 1
     if name not in r.color_mapping:
         r.color_mapping[name] = (random.randint(100, 255), random.randint(100, 255), random.randint(100, 255))
-    return 'voted'
+
+
+@sockets.route('/vote')
+def vote_ws(ws):
+    while not ws.closed:
+        # Sleep to prevent *contstant* context-switches.
+        #gevent.sleep(0.1)
+        message_json = ws.receive()
+        if message_json:
+            message = json.loads(message_json)
+            vote(**message)
+            #print('voted %s' % repr(message))
 
 
 @app.route('/status')
@@ -76,9 +86,13 @@ def reset():
     r.state['last-left-count-upon-action'] = 0
     r.state['last-right-count-upon-action'] = 0
     r.state['current-position'] = position_default
+    r.redis_conn.delete('status-lock')
     return 'reset'
 
 
 if __name__ == '__main__':
-    app.debug = True
-    app.run(host='0.0.0.0')
+    # app.debug = True
+    from gevent.pywsgi import WSGIServer
+    from geventwebsocket.handler import WebSocketHandler
+    server = WSGIServer(("0.0.0.0", 80), app, handler_class=WebSocketHandler)
+    server.serve_forever()

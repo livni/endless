@@ -1,0 +1,3 @@
+[submodule "reconnecting-websocket"]
+	path = reconnecting-websocket
+	url = https://github.com/joewalnes/reconnecting-websocket.git
