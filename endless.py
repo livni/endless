@@ -11,11 +11,11 @@ import redis_conduit as r
 app = Flask(__name__)
 sockets = Sockets(app)
 
-ACTION_LIMIT = 5
+ACTION_LIMIT = 100
 position_min = 1
 position_max = 3
 position_default = 2
-current_speed = default_speed = 3
+current_speed = default_speed = 6
 SPEED_MAX = 10
 SPEED_MIN = 1
 
@@ -67,7 +67,9 @@ def get_status():
                 r.state['current-position'] = max(position_min, int(r.state['current-position']) - 1)
             else:
                 r.state['current-position'] = min(position_max, int(r.state['current-position']) + 1)
-            motors.set_position(r.state['current-position'])
+            pos = r.state['current-position']
+            motors.set_position(pos)
+            print('set position to %s' % pos)
         status_data = {
             'position-min': position_min,
             'position-max': position_max,
