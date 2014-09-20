@@ -1,7 +1,7 @@
 import time
 from pymodbus.client.sync import ModbusTcpClient as ModbusClient
 
-client_ip = '192.168.1.212'
+client_ip = '10.0.0.2'
 
 client = ModbusClient(client_ip)
 

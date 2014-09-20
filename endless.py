@@ -4,6 +4,8 @@ import random
 import operator
 from flask import Flask, render_template, jsonify
 from flask_sockets import Sockets
+
+import motors
 import redis_conduit as r
 
 app = Flask(__name__)
@@ -13,6 +15,9 @@ ACTION_LIMIT = 5
 position_min = 1
 position_max = 3
 position_default = 2
+current_speed = default_speed = 3
+SPEED_MAX = 10
+SPEED_MIN = 1
 
 
 @app.route('/')
@@ -62,6 +67,7 @@ def get_status():
                 r.state['current-position'] = max(position_min, int(r.state['current-position']) - 1)
             else:
                 r.state['current-position'] = min(position_max, int(r.state['current-position']) + 1)
+            motors.set_position(r.state['current-position'])
         status_data = {
             'position-min': position_min,
             'position-max': position_max,
@@ -79,6 +85,7 @@ def get_status():
 
 @app.route('/reset')
 def reset():
+    global current_speed
     r.color_mapping.clear()
     r.vote_count.clear()
     r.left.clear()
@@ -87,7 +94,36 @@ def reset():
     r.state['last-right-count-upon-action'] = 0
     r.state['current-position'] = position_default
     r.redis_conn.delete('status-lock')
+    motors.init()
+    motors.barrel_rotation_off()
+    motors.turn_motors_on()
+    current_speed = default_speed
+    motors.set_speed(current_speed)
     return 'reset'
+
+
+@app.route('/fast')
+def fast():
+    global current_speed
+    current_speed = min(SPEED_MAX, current_speed+1)
+    motors.set_speed(current_speed)
+
+
+@app.route('/slow')
+def slow():
+    global current_speed
+    current_speed = max(SPEED_MIN, current_speed-1)
+    motors.set_speed(current_speed)
+
+
+@app.route('/on')
+def on():
+    motors.barrel_rotation_on()
+
+
+@app.route('/off')
+def off():
+    motors.barrel_rotation_off()
 
 
 if __name__ == '__main__':
