@@ -45,4 +45,10 @@
     images[arguments[1]].src = arguments[0];
   });
 
+
+//fake voting
+setInterval(function() {vote('left', 'Griselda')}, 900);
+setInterval(function() {vote('right', 'Hugolina')}, 1500);
+setInterval(function() {vote('right', 'Walter Junior')}, 2500);
+
 })();
